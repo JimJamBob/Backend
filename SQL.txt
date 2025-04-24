@@ -1,0 +1,11 @@
+LIMIT 5 OFFSET 2
+IN (1,2,3)
+ORDER BY ____ ASC/DESC, ____ DESC
+WHERE ____ </=/!=/<> ___
+RETURNING *
+INSERT INTO products (name, price, invntory) VALUES ('Fridge',400,23) RETURNING *
+DELETE FROM products WHERE id = ___ RETURNING *
+UPDATE products SET name = 'can', price = 40 WHERE id = 25
+
+
+Insert 0 1 means, we inserted 1 row, forget about the 0
