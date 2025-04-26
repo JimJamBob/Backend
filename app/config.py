@@ -1,4 +1,5 @@
 from pydantic_settings import BaseSettings
+import os
 
 class Settings(BaseSettings):
     #Env variables are usuall capitaised, but in pydantic it will flatten them all
@@ -14,4 +15,8 @@ class Settings(BaseSettings):
     class Config: 
         env_file = ".env"
 
+
 settings = Settings()
+print("Working directory:", os.getcwd())
+print("Loaded hostname:", settings.database_hostname)
+

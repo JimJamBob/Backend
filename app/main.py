@@ -7,7 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 #uvicorn app.main:app --reload 
 
-# Dont really need the following, now that we have alembic
+# Dont really need the following, now  we have alembic
 models.Base.metadata.create_all(bind=engine)
 
     
@@ -32,7 +32,7 @@ app.include_router(authentication.router)
 
 @app.get("/")
 def get_posts(): 
-    return {"Message": "Hello World"}
+    return {"Message": "AWAAAAAAAAAAAA?"}
 
 
 

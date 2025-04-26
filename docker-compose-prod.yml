@@ -1,0 +1,35 @@
+services:
+  api:
+    image:  jamesmc1234/fastapi
+    depends_on: #Setup postgres first
+      - postgres
+    ports:  
+      - "80:8000" #change to port 80
+    #volumes:
+    #  - ./:/usr/src/app:ro # dir of local files, then dir of docker files, then ro for read only. for syncing
+    #command: uvicorn app.main:app --host 0.0.0.0 --port 8000
+    #env_file:
+    #  - ./.env
+    environment:
+      - DATABASE_HOSTNAME=${DATABASE_HOSTNAME} #local dns resolves postgres to the ip of the db
+      - DATABASE_PORT=${DATABASE_PORT}
+      - DATABASE_PASSWORD=${DATABASE_PASSWORD}
+      - DATABASE_NAME=${DATABASE_NAME}
+      - DATABASE_USERNAME=${DATABASE_USERNAME}
+      - SECRET_KEY=${SECRET_KEY}
+      - ALGORITHM=${ALGORITHM}
+      - ACCESS_TOKEN_EXPIRE_MINUTES=${ACCESS_TOKEN_EXPIRE_MINUTES}
+  postgres:
+    image: postgres
+    environment:
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
+      - POSTGRES_DB=${DATABASE_NAME}
+
+    volumes:
+      - postgres-db:/var/lib/postgresql/data
+
+volumes: 
+  postgres-db:
+
+
+    
