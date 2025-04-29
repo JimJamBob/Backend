@@ -18,5 +18,5 @@ class Settings(BaseSettings):
 
 settings = Settings()
 print("Working directory:", os.getcwd())
-print("Loaded hostname:", settings.database_hostname)
+print("Loaded database name:", settings.database_name)
 
