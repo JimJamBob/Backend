@@ -120,7 +120,7 @@ jobs:
             cd app/src
             git pull 
             echo "SVKJ\$NVJN4v4v" | sudo -S systemctl restart fastapi 
-#Above is what you do when you want to input something into a password without creating a new command.
+#Above is what you do when you want to input something into a password without creating a new command
 
 #log into ubunter server
 #cd into app/src
