@@ -94,9 +94,10 @@ jobs:
     steps: 
       - name: pulling git repo
         uses: actions/checkout@v2 #github marketplace has prebuild actions to use, such as checkout
-      - name: deploying on heroku
+      - name: install CLI #Cant use run and uses in the same step
         run: |
           curl https://cli-assets.heroku.com/install.sh | sh 
+      - name: deploying on heroku  
         uses: akhileshns/heroku-deploy@v3.14.15 # This is the action
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
