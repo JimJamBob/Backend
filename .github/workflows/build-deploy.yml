@@ -103,6 +103,6 @@ jobs:
 
       #Nomally have to( but now actions do that for us):
       #pull our github repo
-      #heroku login
+      #heroku logins
       #add git remote for heroku
       #git push heroku main
