@@ -18,5 +18,13 @@ jobs:
     steps: 
       - name: pulling git repo
         uses: actions/checkout@v4 #github marketplace has prebuild actions to use, such as checkout
-      - name: say hi to James
-        run: echo "hello James"       #sudo apt install
+        #name: say hi to James
+        #run: echo "hello James"       #sudo apt install
+        #Can setup a matrix to test versions of python, same with operating systems
+      - name: install python 
+        uses: actions/setup-python@v5
+        with: 
+          python-version: '3.13' 
+      - name: upgrade pip
+        run: python -m pip install --upgrade pip
+      
