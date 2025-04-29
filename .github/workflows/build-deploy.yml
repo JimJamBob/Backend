@@ -87,7 +87,7 @@ jobs:
       #   run: echo ${{ steps.docker_build.outputs.digest }}  
 
   deploy: #look for an action that does all the heroky pushing for us
-    runs-on: ubuntu-lastest
+    runs-on: ubuntu-latest
     needs: [build] #list of jobs that need to be done before this one
     environment:
       name: production
@@ -106,3 +106,19 @@ jobs:
       #heroku logins
       #add git remote for heroku
       #git push heroku main
+
+      - name: deploying to ubuntu server
+        uses: appleboy/ssh-action@master
+        with: 
+          host: ${{secrets.UBUNTU_HOST}}
+          username: ${{secrets.UBUNTU_PROD_USERNAME}}
+          password: ${{secrets.UBUNTU_PROD_PASSWORD}}
+          script: |
+            cd app/src
+            git pull 
+            sudo systemctl restart api
+
+#log into ubunter server
+#cd into app/src
+#Pull
+#systemctl restart
