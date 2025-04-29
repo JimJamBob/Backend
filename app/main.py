@@ -30,7 +30,7 @@ app.include_router(post.router)
 app.include_router(user.router)
 app.include_router(authentication.router)
 
-@app.get("/hello")
+@app.get("/")
 def get_posts(): 
     return {"Message": "Successfully deployed through github actions CI/CD ubuntu"}
 
