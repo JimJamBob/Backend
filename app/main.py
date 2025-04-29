@@ -32,7 +32,7 @@ app.include_router(authentication.router)
 
 @app.get("/")
 def get_posts(): 
-    return {"Message": "Successfully deployed through github actions CI/CD ubuntu"}
+    return {"Message": "Correctly deployed on Heroku"}
 
 
 
