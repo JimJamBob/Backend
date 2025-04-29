@@ -110,16 +110,16 @@ jobs:
       #add git remote for heroku
       #git push heroku main
 
-      - name: deploy to ubuntu server
+      - name: deploying to ubuntu server
         uses: appleboy/ssh-action@master
-        with:
+        with: 
           host: ${{secrets.UBUNTU_PROD_HOST}}
           username: ${{secrets.UBUNTU_PROD_USERNAME}}
           password: ${{secrets.UBUNTU_PROD_PASSWORD}}
           script: |
             cd app/src
-            git pull
-            echo ${{secrets.UBUNTU_PROD_PASSWORD}} | sudo -S systemctl restart api
+            git pull 
+            echo "${{secrets.PROD_PASSWORD}}"" | sudo reboot
 #Above is what you do when you want to input something into a password without creating a new command
 
 #log into ubunter server
