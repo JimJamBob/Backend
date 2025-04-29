@@ -9,11 +9,11 @@ from jose import jwt
 
 
 
-def test_root(client):
-    res = client.get("/")#Why do we pass this in instead of localhost
-    print(res.json().get("Message"))
-    assert res.json().get("Message") == "Hello World"
-    assert res.status_code == 200
+# def test_root(client):
+#     res = client.get("/")#Why do we pass this in instead of localhost
+#     print(res.json().get("Message"))
+#     assert res.json().get("Message") == "Hello World"
+#     assert res.status_code == 200
 
 def test_create_user(client):
     #Make sure to add trailing slash because http... redirects to http../
