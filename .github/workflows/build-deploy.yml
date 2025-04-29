@@ -18,15 +18,18 @@ on: [push, pull_request]
 
 jobs: 
   job1:
+    environment:
+      name: tesing
     env: # This is job only envs. will get removed once job is done
-      DATABASE_HOSTNAME: localhost
-      DATABASE_PORT: 5432
-      DATABASE_PASSWORD: "SDFKN#3j$f4" #need to figure out how to have dollar signs and stuff in yml
-      DATABASE_NAME: FastAPIDatabase
-      DATABASE_USERNAME: postgres
-      SECRET_KEY: sdmeksfmskdmfkd
-      ALGORITHM: HS256
-      ACCESS_TOKEN_EXPIRE_MINUTES: 60      
+      #DATABASE_HOSTNAME: localhost # Still dont want to hardcode these env variables into my github repo
+      DATBASE_HOSTNAME: ${{secrets.DATABASE_HOSTNAME}}  #Can do this through secrets in github repo. Might be clash betwen env and global secrets
+      DATABASE_PORT: ${{secrets.DATABASE_PORT}}
+      DATABASE_PASSWORD: ${{secrets.DATABASE_PASSWORD}} #need to figure out how to have dollar signs and stuff in yml
+      DATABASE_NAME: ${{secrets.DATABASE_NAME}}
+      DATABASE_USERNAME: ${{secrets.DATABASE_USERNAME}}
+      SECRET_KEY: ${{secrets.SECRET_KEY}}
+      ALGORITHM: ${{secrets.ALGORITHM}}
+      ACCESS_TOKEN_EXPIRE_MINUTES: ${{secrets.ACCESS_TOKEN_EXPIRE_MINUTES}}      
     runs-on: ubuntu-latest #go to workflow syntax to see what OS we can run on 
     steps: 
       - name: pulling git repo
