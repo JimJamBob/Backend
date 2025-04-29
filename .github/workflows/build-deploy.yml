@@ -125,4 +125,4 @@ jobs:
 #log into ubunter server
 #cd into app/src
 #Pull
-#systemctl restart
+#systemctl restarting
