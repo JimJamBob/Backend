@@ -120,7 +120,7 @@ jobs:
             cd app/src
             git pull 
             sudo systemctl restart fastapi
-            echo ${{secrets.PROD_PASSWORD}} | sudo -S systemctl restart api 
+            echo ${{secrets.UBUNTU_PROD_PASSWORD}} | sudo -S systemctl restart api 
 #Above is what you do when you want to input something into a password without creating a new command
 
 #log into ubunter server
