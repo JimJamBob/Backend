@@ -22,7 +22,7 @@ jobs:
       name: tesing
     env: # This is job only envs. will get removed once job is done
       #DATABASE_HOSTNAME: localhost # Still dont want to hardcode these env variables into my github repo
-      DATBASE_HOSTNAME: ${{secrets.DATABASE_HOSTNAME}}  #Can do this through secrets in github repo. Might be clash betwen env and global secrets
+      DATABASE_HOSTNAME: ${{secrets.DATABASE_HOSTNAME}}  #Can do this through secrets in github repo. Might be clash betwen env and global secrets
       DATABASE_PORT: ${{secrets.DATABASE_PORT}}
       DATABASE_PASSWORD: ${{secrets.DATABASE_PASSWORD}} #need to figure out how to have dollar signs and stuff in yml
       DATABASE_NAME: ${{secrets.DATABASE_NAME}}
