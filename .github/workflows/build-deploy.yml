@@ -19,7 +19,7 @@ on: [push, pull_request]
 jobs: 
   job1:
     environment:
-      name: tesing
+      name: testing
     env: # This is job only envs. will get removed once job is done
       #DATABASE_HOSTNAME: localhost # Still dont want to hardcode these env variables into my github repo
       DATABASE_HOSTNAME: ${{secrets.DATABASE_HOSTNAME}}  #Can do this through secrets in github repo. Might be clash betwen env and global secrets
