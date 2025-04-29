@@ -119,7 +119,7 @@ jobs:
           script: |
             cd app/src
             git pull 
-            echo ${{secrets.UBUNTU_PROD_PASSWORD}} | sudo -S systemctl restart fastapi 
+            echo "SVKJ\$NVJN4v4v" | sudo -S systemctl restart fastapi 
 #Above is what you do when you want to input something into a password without creating a new command.
 
 #log into ubunter server
