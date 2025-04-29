@@ -32,7 +32,7 @@ app.include_router(authentication.router)
 
 @app.get("/")
 def get_posts(): 
-    return {"Message": "AWAAAAAAAAAAAA?"}
+    return {"Message": "Hello World"}
 
 
 

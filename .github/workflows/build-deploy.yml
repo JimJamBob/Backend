@@ -1,0 +1,22 @@
+name: Build and Deploy Code
+
+#on:  #Tells when we should complete this action [push, pull_request]
+#  push:
+#    branches:  #["main", "another_branch", "freature_branch"] or the following
+#      - "main"
+#      - "another_branch"
+#  pull_request:
+#    branches:
+#      - "test_branch"
+
+on: [push, pull_request]
+#Job is a list of steps that is going to run on a specific runner
+
+jobs: 
+  job1:
+    runs-on: ubuntu-latest #go to workflow syntax to see what OS we can run on 
+    steps: 
+      - name: pulling git repo
+        uses: actions/checkout@v4 #github marketplace has prebuild actions to use, such as checkout
+      - name: say hi to James
+        run: echo "hello James"       #sudo apt install

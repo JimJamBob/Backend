@@ -72,8 +72,6 @@ def delete_posts(id: int, db: Session = Depends(get_db),current_user: int =
 
     post = post_query.first()
 
-    print(id)
-    print(post.user_id)
 
 
     if post == None:
