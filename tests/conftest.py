@@ -19,7 +19,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from app.config import settings
 from app.database import get_db, Base
-from app.oauth2 import create_access_token
+from app.oauth2.oauth2 import create_access_token
 from app import models
 
 import pytest

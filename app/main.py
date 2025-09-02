@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from . import models
 from .database import engine
-from .routers import post, user, authentication, vote
+from .routers import post, user, authentication, vote, tools
 from .config import settings
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -29,11 +29,11 @@ app.include_router(vote.router)
 app.include_router(post.router)
 app.include_router(user.router)
 app.include_router(authentication.router)
+app.include_router(tools.router)
 
 @app.get("/")
 def get_posts(): 
     return {"Message": "Correctly deployed on Heroku"}
-
 
 
 
