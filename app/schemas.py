@@ -66,3 +66,8 @@ class PostOut(BaseModel):
 
     class Config:
         from_attributes = True
+
+
+class DeviceID(BaseModel):
+    device_id: int
+

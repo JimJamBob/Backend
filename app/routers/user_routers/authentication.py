@@ -9,6 +9,12 @@ router = APIRouter(
     tags = ["Authenication"]
 )
 
+
+# 'user_credentials' is an instance of OAuth2PasswordRequestForm,
+# which reads the username and password from the form data of the request.
+# We use Depends() because OAuth2PasswordRequestForm is a dependency that FastAPI
+# automatically resolves and injects into the route.
+# 'db' is a database session dependency, also injected using Depends().
 @router.post('/login', response_model= schemas.Token)
 def login(user_credentials: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(database.get_db)):
     

@@ -33,7 +33,6 @@ def verify_access_token(token: str, credentials_exception):
         if id is None:
             raise credentials_exception
         token_data = schemas.TokenData(id= id)
-
    except JWTError:
        raise credentials_exception
    return token_data
@@ -41,6 +40,7 @@ def verify_access_token(token: str, credentials_exception):
 
    
 def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(database.get_db)):
+
     credentials_exception = HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail = f"Could not vald", 
                                           headers = {"WWW-Authenticate": "Bearer"})
     
@@ -49,6 +49,21 @@ def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(
     user = db.query(models.User).filter(models.User.id == token.id).first()
 
     return user.id
+
+#Need to verify this for tool call access from the agent
+def verify_livekit_token(token: str, credentials_exception): 
+   try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+
+        id = payload.get("user_id")
+
+        if id is None:
+            raise credentials_exception
+        token_data = schemas.TokenData(id= id)
+   except JWTError:
+       raise credentials_exception
+   return token_data
+
        
        
 

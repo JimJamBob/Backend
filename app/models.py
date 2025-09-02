@@ -31,3 +31,11 @@ class Vote(Base):
     user_id = Column(Integer, ForeignKey("users.id", ondelete= "CASCADE"), nullable = False, primary_key = True)
     post_id = Column(Integer, ForeignKey("post.id", ondelete= "CASCADE"), nullable = False, primary_key = True)
 
+
+class Device(Base):
+    __tablename__ = "device"
+
+    device_id = Column(Integer, primary_key = True, nullable = False)
+    user_id = Column(Integer, ForeignKey("users.id", ondelete= "CASCADE"), nullable = True)
+    marked_active = Column(Boolean, nullable = False, default=True)
+

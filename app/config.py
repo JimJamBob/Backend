@@ -11,6 +11,11 @@ class Settings(BaseSettings):
     secret_key: str
     algorithm: str
     access_token_expire_minutes: int
+    livekit_access_token_expire_minutes: int
+    livekit_url: str
+    livekit_api_secret: str
+    livekit_api_key: str
+
 
     class Config: 
         env_file = ".env"

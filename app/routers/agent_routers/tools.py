@@ -8,6 +8,8 @@ from ..database import get_db
 from sqlalchemy import func
 
 router = APIRouter(
-    prefix  = "/posts",
-    tags = ["posts"]
+    prefix  = "/tools",
+    tags = ["tools"]
 )
+
+
