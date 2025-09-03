@@ -12,6 +12,7 @@ class Settings(BaseSettings):
     algorithm: str
     access_token_expire_minutes: int
     livekit_access_token_expire_minutes: int
+    
     livekit_url: str
     livekit_api_secret: str
     livekit_api_key: str

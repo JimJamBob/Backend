@@ -4,21 +4,20 @@ from sqlalchemy.orm import Session
 
 from app.database import get_db
 
-from ..oauth2 import oauth2
+from .. import oauth2
 from .. import database, schemas, models, utils
 from fastapi.security.oauth2 import OAuth2PasswordRequestForm
 from livekit import api
 import os
-from livekit.api import LiveKitAPI
+from livekit.api import lkapi
 
 router = APIRouter(
-    tags = ["Device Authenication"]
-    prefix  = "/device_authentication",
+    tags = ["Device Authenication"],
+    prefix  = "/device_authentication"
+    )
 
-)
 
-
-#The following function takes the backend jwt and provides the livekit jwt 
+#The following endpoint takes the backend jwt and provides the livekit jwt 
 @router.post('/', response_model= schemas.Token)
 async def get_livekit_token(device_id: schemas.DeviceID 
                     ,db: Session = Depends(get_db), current_user: int = 
@@ -45,10 +44,10 @@ async def get_livekit_token(device_id: schemas.DeviceID
     livekit_token = api.AccessToken(os.getenv('LIVEKIT_API_KEY'),
                         os.getenv('LIVEKIT_API_SECRET')) \
         .with_identity("identity") \
-        .with_name(f"{device_id}") \
+        .with_name("name") \
         .with_grants(api.VideoGrants(
             room_join=True,
-            room="my-room")) \
+            room=f"{device_id}")) \
             .with_room_config(
                 api.RoomConfiguration(
                     agents=[
