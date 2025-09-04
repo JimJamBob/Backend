@@ -11,6 +11,7 @@ class Settings(BaseSettings):
     secret_key: str
     algorithm: str
     access_token_expire_minutes: int
+    device_access_token_expire_minutes: int
     livekit_access_token_expire_minutes: int
     
     livekit_url: str
