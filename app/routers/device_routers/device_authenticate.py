@@ -10,7 +10,7 @@ from fastapi.security.oauth2 import OAuth2PasswordRequestForm
 from livekit import api
 import os
 from livekit.api import CreateRoomRequest
-from ...livekit_client import get_livekit_client
+from ...livekit_client import get_livekit_client, get_livekit_token
 from livekit.api import LiveKitAPI
 
 
@@ -22,7 +22,7 @@ router = APIRouter(
 
 #The following endpoint takes the backend jwt and provides the livekit jwt 
 @router.post('/', response_model= schemas.Token)
-async def build_room_get_token(device_id: schemas.DeviceID,
+async def build_room_get_token(device: schemas.Device,
                             db: Session = Depends(get_db), 
                                 current_user: int = Depends(oauth2.get_current_user),
                                     lkapi: LiveKitAPI = Depends(get_livekit_client)):
@@ -30,8 +30,8 @@ async def build_room_get_token(device_id: schemas.DeviceID,
     
     # Check if the user has the device and if its not flagged
     device = db.query(models.Device).filter(
-        models.Device.user_id == current_user.id,
-        models.Device.device_id == device_id
+        models.Device.user_id == current_user,
+        models.Device.device_id == device.device_id
     ).first()
 
     if device is None or device.marked_active == False:

@@ -18,12 +18,12 @@ router = APIRouter(
     tags = ["device"]
 )
 
-@router.post("/deactivate", status_code=status.HTTP_201_CREATED, response_model= schemas.DeviceID)
-async def deactivate(device_id: schemas.DeviceID, db: Session = Depends(get_db), lkapi: LiveKitAPI = Depends(get_livekit_client), 
+@router.post("/deactivate", status_code=status.HTTP_201_CREATED, response_model= schemas.Device)
+async def deactivate(device: schemas.Device, db: Session = Depends(get_db), lkapi: LiveKitAPI = Depends(get_livekit_client), 
                       current_user_id: int = Depends(oauth2.get_current_user)):
 
     # Fetch the device by ID
-    device = db.query(models.Device).filter(models.Device.device_id == device_id.device_id).first()
+    device = db.query(models.Device).filter(models.Device.device_id == device.device_id).first()
 
 
     if device:
@@ -34,15 +34,15 @@ async def deactivate(device_id: schemas.DeviceID, db: Session = Depends(get_db),
         # Try to delete the LiveKit room if it exists
         try:
             await lkapi.room.delete_room(DeleteRoomRequest(
-                room=f"{device_id.device_id}",
+                room=f"{device.device_id}",
             ))
-            print(f"Successfully deleted LiveKit room for device {device_id.device_id}")
+            print(f"Successfully deleted LiveKit room for device {device.device_id}")
         except Exception as e:
             # Room probably doesn't exist or other LiveKit error
             # Log the error but don't fail the deactivation
-            print(f"Could not delete LiveKit room for device {device_id.device_id}: {str(e)}")
+            print(f"Could not delete LiveKit room for device {device.device_id}: {str(e)}")
             # Optionally log with proper logging:
-            # logger.warning(f"Could not delete LiveKit room for device {device_id.device_id}: {str(e)}")
+            # logger.warning(f"Could not delete LiveKit room for device {device.device_id}: {str(e)}")
         
         return device
     else:
@@ -52,13 +52,13 @@ async def deactivate(device_id: schemas.DeviceID, db: Session = Depends(get_db),
     )
 
 
-@router.post("/register", status_code=status.HTTP_201_CREATED, response_model=schemas.DeviceID)
-async def register_device(device_id: schemas.DeviceID, db: Session = Depends(get_db), 
+@router.post("/register", status_code=status.HTTP_201_CREATED, response_model=schemas.Device)
+async def register_device(device: schemas.Device, db: Session = Depends(get_db), 
                          current_user_id: int = Depends(oauth2.get_current_user)):
     
     # Check if device already exists
     existing_device = db.query(models.Device).filter(
-        models.Device.device_id == device_id.device_id
+        models.Device.device_id == device.device_id
     ).first()
     
     if existing_device:
@@ -73,16 +73,24 @@ async def register_device(device_id: schemas.DeviceID, db: Session = Depends(get
             db.refresh(existing_device)
             
             return existing_device
+        elif existing_device.marked_assigned and not existing_device.marked_active:
+            # Device is assigned but inactive - just mark it as active
+            existing_device.marked_active = True
+            
+            db.commit()
+            db.refresh(existing_device)
+            
+            return existing_device
         else:
-            # Device already assigned to someone
+            # Device already assigned and active
             raise HTTPException(
                 status_code=status.HTTP_409_CONFLICT,
-                detail=f"Device {device_id.device_id} is already assigned to a user"
+                detail=f"Device {device.device_id} is already assigned and active"
             )
     else:
         # Device doesn't exist - create new device
         new_device = models.Device(
-            device_id=device_id.device_id,
+            device_id=device.device_id,
             user_id=current_user_id,
             marked_assigned=True,
             marked_active=True
