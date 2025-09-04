@@ -1,7 +1,9 @@
 from fastapi import FastAPI
 from . import models
 from .database import engine
-from .routers import post, user, authentication, vote, tools
+from .routers.user_routers import post, user, authentication, vote, device
+from .routers.agent_routers import tools
+from .routers.device_routers import device_authenticate
 from .config import settings
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -30,6 +32,8 @@ app.include_router(post.router)
 app.include_router(user.router)
 app.include_router(authentication.router)
 app.include_router(tools.router)
+app.include_router(device.router)
+app.include_router(device_authenticate.router)
 
 @app.get("/")
 def get_posts(): 

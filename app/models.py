@@ -37,5 +37,6 @@ class Device(Base):
 
     device_id = Column(Integer, primary_key = True, nullable = False)
     user_id = Column(Integer, ForeignKey("users.id", ondelete= "CASCADE"), nullable = True)
+    marked_assigned = Column(Boolean, nullable = False, default=True)
     marked_active = Column(Boolean, nullable = False, default=True)
 

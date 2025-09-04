@@ -4,24 +4,29 @@ from sqlalchemy.orm import Session
 
 from app.database import get_db
 
-from .. import oauth2
-from .. import database, schemas, models, utils
+from ... import oauth2
+from ... import database, schemas, models, utils
 from fastapi.security.oauth2 import OAuth2PasswordRequestForm
 from livekit import api
 import os
-from livekit.api import lkapi
+from livekit.api import CreateRoomRequest
+from ...livekit_client import get_livekit_client, get_livekit_token
+from livekit.api import LiveKitAPI
+
 
 router = APIRouter(
     tags = ["Device Authenication"],
-    prefix  = "/device_authentication"
+    prefix  = "/gettoken"
     )
 
 
 #The following endpoint takes the backend jwt and provides the livekit jwt 
 @router.post('/', response_model= schemas.Token)
-async def get_livekit_token(device_id: schemas.DeviceID 
-                    ,db: Session = Depends(get_db), current_user: int = 
-                        Depends(oauth2.get_current_user)):
+async def get_livekit_token(device_id: schemas.DeviceID,
+                            db: Session = Depends(get_db), 
+                                current_user: int = Depends(oauth2.get_current_user),
+                                    lkapi: LiveKitAPI = Depends(get_livekit_client)):
+    print("Hello")
     
     # Check if the user has the device and if its not flagged
     device = db.query(models.Device).filter(
@@ -41,22 +46,7 @@ async def get_livekit_token(device_id: schemas.DeviceID
         ))
     
     #With name room, is where the device can only join the room above.
-    livekit_token = api.AccessToken(os.getenv('LIVEKIT_API_KEY'),
-                        os.getenv('LIVEKIT_API_SECRET')) \
-        .with_identity("identity") \
-        .with_name("name") \
-        .with_grants(api.VideoGrants(
-            room_join=True,
-            room=f"{device_id}")) \
-            .with_room_config(
-                api.RoomConfiguration(
-                    agents=[
-                        api.RoomAgentDispatch(
-                            agent_name="test-agent", metadata="test-metadata"
-                        )
-                    ],
-                ),
-            ).to_jwt()
+    livekit_token = get_livekit_token(device_id)
 
     
     return {"access_token": livekit_token, "token_type": "Bearer"}
