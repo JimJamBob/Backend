@@ -10,7 +10,7 @@ from fastapi.security.oauth2 import OAuth2PasswordRequestForm
 from livekit import api
 import os
 from livekit.api import CreateRoomRequest
-from ...livekit_client import get_livekit_client, get_livekit_token
+from ...livekit_client import get_livekit_client
 from livekit.api import LiveKitAPI
 
 
@@ -22,7 +22,7 @@ router = APIRouter(
 
 #The following endpoint takes the backend jwt and provides the livekit jwt 
 @router.post('/', response_model= schemas.Token)
-async def get_livekit_token(device_id: schemas.DeviceID,
+async def build_room_get_token(device_id: schemas.DeviceID,
                             db: Session = Depends(get_db), 
                                 current_user: int = Depends(oauth2.get_current_user),
                                     lkapi: LiveKitAPI = Depends(get_livekit_client)):

@@ -4,7 +4,7 @@ from .config import settings
 from livekit import api
 
 
-def get_livekit_client() -> LiveKitAPI:
+async def get_livekit_client() -> LiveKitAPI:
     """Initialize and return a LiveKitAPI client."""
     return LiveKitAPI(
         url=settings.livekit_url,
@@ -13,8 +13,8 @@ def get_livekit_client() -> LiveKitAPI:
     )
 
 
-async def retreive_livekit_token(device_id: int):
-    api.AccessToken(settings.livekit_api_key,
+async def get_livekit_token(device_id: int):
+    token = api.AccessToken(settings.livekit_api_key,
                         settings.livekit_api_secret) \
         .with_identity("identity") \
         .with_name("name") \
@@ -30,3 +30,4 @@ async def retreive_livekit_token(device_id: int):
                     ],
                 ),
             ).to_jwt()
+    return token

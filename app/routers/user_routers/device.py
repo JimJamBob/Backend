@@ -23,7 +23,7 @@ async def deactivate(device_id: schemas.DeviceID, db: Session = Depends(get_db),
                       current_user_id: int = Depends(oauth2.get_current_user)):
 
     # Fetch the device by ID
-    device = db.query(models.Device).filter(models.Device.device_id == device_id).first()
+    device = db.query(models.Device).filter(models.Device.device_id == device_id.device_id).first()
 
 
     if device:
@@ -31,10 +31,18 @@ async def deactivate(device_id: schemas.DeviceID, db: Session = Depends(get_db),
         db.commit()                   # Save changes to DB
         db.refresh(device)            # Refresh object with updated values
         
-        #delete the room
-        await lkapi.room.delete_room(DeleteRoomRequest(
-            room="myroom",
-        ))
+        # Try to delete the LiveKit room if it exists
+        try:
+            await lkapi.room.delete_room(DeleteRoomRequest(
+                room=f"{device_id.device_id}",
+            ))
+            print(f"Successfully deleted LiveKit room for device {device_id.device_id}")
+        except Exception as e:
+            # Room probably doesn't exist or other LiveKit error
+            # Log the error but don't fail the deactivation
+            print(f"Could not delete LiveKit room for device {device_id.device_id}: {str(e)}")
+            # Optionally log with proper logging:
+            # logger.warning(f"Could not delete LiveKit room for device {device_id.device_id}: {str(e)}")
         
         return device
     else:
