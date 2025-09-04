@@ -6,11 +6,12 @@ from livekit import api
 
 async def get_livekit_client() -> LiveKitAPI:
     """Initialize and return a LiveKitAPI client."""
-    return LiveKitAPI(
-        url=settings.livekit_url,
+
+    async with LiveKitAPI(url=settings.livekit_url,
         api_key=settings.livekit_api_key,
-        api_secret=settings.livekit_api_secret
-    )
+        api_secret=settings.livekit_api_secret) as client:
+        yield client  # FastAPI will automatically clean up after the request
+
 
 
 async def get_livekit_token(device_id: int):

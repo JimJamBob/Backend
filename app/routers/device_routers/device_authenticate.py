@@ -35,7 +35,10 @@ async def build_room_get_token(device: schemas.Device,
     ).first()
 
     if device is None or device.marked_active == False:
-        return None  # or raise an exception
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Device not found or inactive"
+        )
     
     #CHecked that the device isn't flagged lost, and the user exists and it logged in. Now create room
     #Use the device name as the room is better, as it requires less db queries.
