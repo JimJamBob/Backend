@@ -4,7 +4,7 @@ from .config import settings
 from livekit import api
 
 
-async def get_livekit_client() -> LiveKitAPI:
+async def get_livekit_client():
     """Initialize and return a LiveKitAPI client."""
 
     async with LiveKitAPI(url=settings.livekit_url,

@@ -21,7 +21,7 @@ router = APIRouter(
 
 
 #The following endpoint takes the backend jwt and provides the livekit jwt 
-@router.post('/', response_model= schemas.Token)
+@router.post('/')
 async def build_room_get_token(device: schemas.Device,
                             db: Session = Depends(get_db), 
                                 current_user: int = Depends(oauth2.get_current_user),
@@ -43,13 +43,16 @@ async def build_room_get_token(device: schemas.Device,
     #CHecked that the device isn't flagged lost, and the user exists and it logged in. Now create room
     #Use the device name as the room is better, as it requires less db queries.
     room = await lkapi.room.create_room(CreateRoomRequest(
-        name=f"{device_id}",
+        name=f"{device.device_id}",
         empty_timeout=10 * 60,
         max_participants=2,
         ))
     
     #With name room, is where the device can only join the room above.
-    livekit_token = get_livekit_token(device_id)
+    livekit_token = await get_livekit_token(device.device_id)
+    print("1")
+    print(livekit_token)
+    print("2")
 
     
-    return {"access_token": livekit_token, "token_type": "Bearer"}
+    return livekit_token
