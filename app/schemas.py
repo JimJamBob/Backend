@@ -53,8 +53,13 @@ class Token(BaseModel):
     token_type: str
 
 
-class TokenData(BaseModel):
-    id: Optional[int] = None
+class UserTokenData(BaseModel):
+    user_id: Optional[int] = None
+
+class DeviceTokenData(BaseModel):
+    user_id: Optional[int] = None
+    device_id: Optional[int] = None
+
 
 class Vote(BaseModel):
     post_id: int

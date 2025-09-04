@@ -22,16 +22,17 @@ router = APIRouter(
 
 #The following endpoint takes the backend jwt and provides the livekit jwt 
 @router.post('/')
-async def build_room_get_token(device: schemas.Device,
-                            db: Session = Depends(get_db), 
-                                current_user: int = Depends(oauth2.get_current_user),
+async def build_room_get_token(db: Session = Depends(get_db), 
+                                token_data: schemas.DeviceTokenData = Depends(oauth2.get_current_device_user),
                                     lkapi: LiveKitAPI = Depends(get_livekit_client)):
-    print("Hello")
     
-    # Check if the user has the device and if its not flagged
+    user_id = token_data.user_id
+    device_id = token_data.device_id
+
+    # Check if the user has the device and if it's not flagged
     device = db.query(models.Device).filter(
-        models.Device.user_id == current_user,
-        models.Device.device_id == device.device_id
+        models.Device.user_id == user_id,
+        models.Device.device_id == device_id
     ).first()
 
     if device is None or device.marked_active == False:
@@ -48,11 +49,9 @@ async def build_room_get_token(device: schemas.Device,
         max_participants=2,
         ))
     
+
     #With name room, is where the device can only join the room above.
     livekit_token = await get_livekit_token(device.device_id)
-    print("1")
-    print(livekit_token)
-    print("2")
 
     
     return livekit_token
